@@ -67,10 +67,10 @@ def unet_mini(n_classes, input_height=360, input_width=480, channels=3):
 
 
 def _unet(n_classes, encoder, l1_skip_conn=True, input_height=416,
-          input_width=608, channels=3):
+          input_width=608, channels=3, pretrained='imagenet'):
 
     img_input, levels = encoder(
-        input_height=input_height, input_width=input_width, channels=channels)
+        input_height=input_height, input_width=input_width, channels=channels, pretrained=pretrained)
     [f1, f2, f3, f4, f5] = levels
 
     o = f4
@@ -134,10 +134,13 @@ def resnet50_unet(n_classes, input_height=416, input_width=608,
 
 
 def mobilenet_unet(n_classes, input_height=224, input_width=224,
-                   encoder_level=3, channels=3):
+                   encoder_level=3, channels=3, pretrained='imagenet'):
+
+    # model = _unet(n_classes, get_mobilenet_encoder,
+    #               input_height=input_height, input_width=input_width, channels=channels)
 
     model = _unet(n_classes, get_mobilenet_encoder,
-                  input_height=input_height, input_width=input_width, channels=channels)
+                  input_height=input_height, input_width=input_width, channels=channels, pretrained=pretrained)
     model.model_name = "mobilenet_unet"
     return model
 
